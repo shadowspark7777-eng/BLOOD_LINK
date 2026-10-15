@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>BLOOD LINK — Emergency Blood Donor & Coordination Network</title>
+  <meta name="description" content="Blood Link connects blood requesters, willing volunteer donors, and authorized healthcare facilities through a privacy-conscious coordination interface.">
+  <meta name="theme-color" content="#080808">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+  
+  <!-- Modern Clean Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       APP HEADER (Compact Desktop Navigation & Mobile Top Bar)
+       ========================================================================== -->
+  <header class="app-header">
+    <div class="header-inner">
+      <!-- Brand Logo & Name -->
+      <a class="brand-link" id="brandLogoHome">
+        <div class="brand-logo-wrap" title="Blood Link">
+          <img src="assets/logo.png" class="brand-logo-img" alt="Blood Link Heartbeat Logo">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">BLOOD<span class="red-accent">LINK</span></div>
+          <span class="brand-tagline">One connection. A chance to help.</span>
+        </div>
+      </a>
+
+      <!-- Desktop App Navigation (EXACTLY 5 ITEMS) -->
+      <nav class="desktop-nav" aria-label="Main Navigation">
+        <button class="nav-item-btn active" data-view="home" id="navHome">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span>Home</span>
+        </button>
+        <button class="nav-item-btn" data-view="donors" id="navDonors">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Find Donors</span>
+        </button>
+        <button class="nav-item-btn" data-view="request" id="navRequest">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><line x1="12" y1="9" x2="12" y2="15"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+          <span>Request</span>
+        </button>
+        <button class="nav-item-btn" data-view="alerts" id="navAlerts">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span>Alerts</span>
+          <span class="nav-badge-pill" id="navAlertBadge">2</span>
+        </button>
+        <button class="nav-item-btn" data-view="profile" id="navProfile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Profile</span>
+        </button>
+      </nav>
+
+      <!-- Right Header Actions -->
+      <div class="header-actions">
+        <button class="header-auth-btn" id="headerAuthBtn" title="Login or Register" onclick="BloodLinkApp.openAuthModal('login')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          <span>Login / Register</span>
+        </button>
+        <button class="emergency-sos-btn" id="headerSosBtn" title="Post Urgent Request">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span>EMERGENCY SOS</span>
+        </button>
+        <button class="header-user-btn" id="headerUserBtn" title="Account Settings">
+          <div class="user-avatar-mini" id="headerUserAvatar">R</div>
+          <div class="user-status-text">
+            <span class="user-status-name" id="headerUserName">Rahul S.</span>
+            <span class="user-status-role" id="headerUserRole">O+ • Active Donor</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       APP CONTAINER (Single Page Application Views)
+       ========================================================================== -->
+  <main class="app-container">
+
+    <!-- ------------------------------------------------------------------------
+         VIEW 1: HOME DASHBOARD
+         ------------------------------------------------------------------------ -->
+    <section class="app-view active" id="view-home">
+      <!-- Greeting Header -->
+      <div class="home-welcome-header">
+        <div class="welcome-text">
+          <h1 id="homeUserGreeting">Welcome, Rahul</h1>
+          <p class="welcome-subtitle">
+            <span>Ready to coordinate a lifesaving connection?</span>
+            <span class="location-chip">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span id="homeLocationCity">Bengaluru, Indiranagar</span>
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Emergency Need Broadcast Banner -->
+      <div class="emergency-broadcast-card">
+        <div class="broadcast-content">
+          <div class="broadcast-icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <div class="broadcast-text">
+            <h3>CRITICAL EMERGENCY ALERT: O- Needed</h3>
+            <p>Manipal Hospital (HAL Airport Rd) requires 2 units of O- blood within 2 hours for cardiac surgery.</p>
+          </div>
+        </div>
+        <div class="broadcast-actions">
+          <button class="btn-primary" onclick="BloodLinkApp.trackSpecificRequest('BL-REQ-8492')">View & Respond</button>
+        </div>
+      </div>
+
+      <!-- Quick Actions 4-Grid -->
+      <div class="quick-actions-grid">
+        <!-- 1. Request Blood -->
+        <div class="action-card primary-request" onclick="BloodLinkApp.switchView('request')">
+          <div class="action-card-top">
+            <div class="action-card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><line x1="12" y1="9" x2="12" y2="15"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+            </div>
+            <div class="action-card-arrow">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+          </div>
+          <div class="action-card-bottom">
+            <h3>Request Blood</h3>
+            <p>Create an emergency requisition with live hospital verification.</p>
+          </div>
+        </div>
+
+        <!-- 2. Find Donors -->
+        <div class="action-card find-donors" onclick="BloodLinkApp.switchView('donors')">
+          <div class="action-card-top">
+            <div class="action-card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="action-card-arrow">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+          </div>
+          <div class="action-card-bottom">
+            <h3>Find Donors</h3>
+            <p>Search verified voluntary donors by blood group & radius.</p>
+          </div>
+        </div>
+
+        <!-- 3. Track Blood Requests -->
+        <div class="action-card track-requests" onclick="BloodLinkApp.switchView('tracker')">
+          <div class="action-card-top">
+            <div class="action-card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <div class="action-card-arrow">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+          </div>
+          <div class="action-card-bottom">
+            <h3>Track Requests</h3>
+            <p>Live 6-stage lifecycle tracking from open to transfusion.</p>
+          </div>
+        </div>
+
+        <!-- 4. Become a Donor / Pass -->
+        <div class="action-card become-donor" onclick="BloodLinkApp.openModal('modalBecomeDonor')">
+          <div class="action-card-top">
+            <div class="action-card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            </div>
+            <div class="action-card-arrow">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+          </div>
+          <div class="action-card-bottom">
+            <h3>Donor Registration</h3>
+            <p>Register as emergency volunteer & get your digital pass.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Blood Group Inventory & Urgency Matrix -->
+      <div class="section-header">
+        <h3 class="section-title">
+          <span class="pulse-dot"></span>
+          <span>Regional Blood Group Demand & Inventory</span>
+        </h3>
+        <span style="font-size:0.82rem; color:var(--text-secondary);">Tap any blood group to filter donors</span>
+      </div>
+
+      <div class="blood-matrix-grid">
+        <div class="matrix-card critical" onclick="BloodLinkApp.filterDonorsByGroup('O-')">
+          <div class="matrix-blood-group">O-</div>
+          <div class="matrix-status-text critical">Critical Need</div>
+        </div>
+        <div class="matrix-card critical" onclick="BloodLinkApp.filterDonorsByGroup('AB-')">
+          <div class="matrix-blood-group">AB-</div>
+          <div class="matrix-status-text critical">Critical Need</div>
+        </div>
+        <div class="matrix-card" onclick="BloodLinkApp.filterDonorsByGroup('O+')">
+          <div class="matrix-blood-group">O+</div>
+          <div class="matrix-status-text urgent">Urgent Need</div>
+        </div>
+        <div class="matrix-card" onclick="BloodLinkApp.filterDonorsByGroup('A+')">
+          <div class="matrix-blood-group">A+</div>
+          <div class="matrix-status-text urgent">Moderate</div>
+        </div>
+        <div class="matrix-card" onclick="BloodLinkApp.filterDonorsByGroup('B+')">
+          <div class="matrix-blood-group">B+</div>
+          <div class="matrix-status-text normal">Normal</div>
+        </div>
+        <div class="matrix-card" onclick="BloodLinkApp.filterDonorsByGroup('A-')">
+          <div class="matrix-blood-group">A-</div>
+          <div class="matrix-status-text urgent">Urgent Need</div>
+        </div>
+        <div class="matrix-card" onclick="BloodLinkApp.filterDonorsByGroup('B-')">
+          <div class="matrix-blood-group">B-</div>
+          <div class="matrix-status-text urgent">Moderate</div>
+        </div>
+        <div class="matrix-card" onclick="BloodLinkApp.filterDonorsByGroup('AB+')">
+          <div class="matrix-blood-group">AB+</div>
+          <div class="matrix-status-text normal">Normal</div>
+        </div>
+      </div>
+
+      <!-- Active Urgent Blood Requests Feed -->
+      <div class="section-header">
+        <h3 class="section-title">Active Urgent Coordination Requests</h3>
+        <button class="btn-ghost" onclick="BloodLinkApp.switchView('tracker')">View All Trackers →</button>
+      </div>
+
+      <div class="requests-feed-grid" id="homeUrgentFeed">
+        <!-- Rendered dynamically via js/app.js -->
+      </div>
+
+      <!-- How Blood Link Works & Trust Safeguards -->
+      <div class="info-columns-wrap">
+        <div class="how-it-works-card">
+          <h4 style="font-size:1.15rem; color:var(--text-primary); margin-bottom:4px;">How Blood Link Works</h4>
+          <p style="font-size:0.85rem; color:var(--text-secondary);">Direct voluntary coordination with clinical hospital privacy safeguards.</p>
+          
+          <div class="how-steps-grid">
+            <div class="step-box">
+              <div class="step-num">1</div>
+              <h5>Requisition & Verify</h5>
+              <p>Requesters submit emergency blood needs along with hospital desk credentials.</p>
+            </div>
+            <div class="step-box">
+              <div class="step-num">2</div>
+              <h5>Smart Matching</h5>
+              <p>Nearby compatible donors receive encrypted pings without exposing personal numbers.</p>
+            </div>
+            <div class="step-box">
+              <div class="step-num">3</div>
+              <h5>Hospital Transfusion</h5>
+              <p>Volunteers check in directly at the hospital blood bank for clinical safety tests.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="safety-trust-card">
+          <div>
+            <h4>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary-red)" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>Clinical Safety Protocol</span>
+            </h4>
+            <p>Blood Link coordinates willing voluntary donors. All blood screening, cross-matching, testing, and transfusions are conducted strictly by authorized medical personnel at certified hospital blood banks.</p>
+          </div>
+          <button class="btn-secondary" style="font-size:0.82rem; padding:8px 14px;" onclick="BloodLinkApp.openModal('modalAboutHelp')">
+            Read Healthcare Standards
+          </button>
+        </div>
+      </div>
+
+      <!-- AI FAQ Assistant Banner -->
+      <div class="ai-assistant-banner">
+        <div class="ai-banner-left">
+          <div class="ai-sparkle-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          </div>
+          <div class="ai-banner-text">
+            <h4>Have Questions About Blood Donation or Compatibility?</h4>
+            <p>Ask LinkBot — our instant AI FAQ assistant for eligibility rules, privacy policies, and process guidance.</p>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="BloodLinkApp.toggleChatDrawer(true)">Chat with LinkBot</button>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------------
+         VIEW 2: FIND DONORS
+         ------------------------------------------------------------------------ -->
+    <section class="app-view" id="view-donors">
+      <div class="view-title-wrap">
+        <h2>Volunteer Donors Directory</h2>
+        <p>Find willing, privacy-conscious donors in your area sorted by proximity and verified status.</p>
+      </div>
+
+      <!-- Filters & Search Control Box -->
+      <div class="donors-search-box">
+        <div class="donors-filter-controls">
+          <div class="search-input-row">
+            <div class="search-input-wrap">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" class="search-input-field" id="donorSearchInput" placeholder="Search by city (e.g. Bengaluru), locality, or donor name...">
+            </div>
+          </div>
+
+          <!-- Blood Group Chips (All 8 Blood Groups) -->
+          <div class="blood-chips-row">
+            <button class="blood-chip-btn active" data-bg="ALL">All Groups</button>
+            <button class="blood-chip-btn" data-bg="O-">O- (Universal)</button>
+            <button class="blood-chip-btn" data-bg="O+">O+</button>
+            <button class="blood-chip-btn" data-bg="A+">A+</button>
+            <button class="blood-chip-btn" data-bg="A-">A-</button>
+            <button class="blood-chip-btn" data-bg="B+">B+</button>
+            <button class="blood-chip-btn" data-bg="B-">B-</button>
+            <button class="blood-chip-btn" data-bg="AB+">AB+ (Recipient)</button>
+            <button class="blood-chip-btn" data-bg="AB-">AB-</button>
+          </div>
+
+          <!-- Sub Filters: Availability & Sort -->
+          <div class="filters-sub-row">
+            <label class="toggle-switch-label">
+              <input type="checkbox" class="toggle-checkbox" id="donorAvailOnlyCheck">
+              <span>Show Available Donors Only</span>
+            </label>
+
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:0.84rem; color:var(--text-secondary);">Sort By:</span>
+              <select class="sort-select" id="donorSortSelect">
+                <option value="distance">Closest Proximity</option>
+                <option value="donations">Most Donations</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Count -->
+      <div class="donors-results-counter" id="donorsCountMsg">Showing verified donors...</div>
+
+      <!-- Donor Cards Grid -->
+      <div class="donors-cards-grid" id="donorsListGrid">
+        <!-- Dynamically rendered via app.js -->
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------------
+         VIEW 3: REQUEST BLOOD
+         ------------------------------------------------------------------------ -->
+    <section class="app-view" id="view-request">
+      <div class="request-form-container">
+        <div class="view-title-wrap" style="text-align:center;">
+          <h2>Emergency Blood Requisition</h2>
+          <p>Submit a verified blood request. Matching volunteer donors in your area will receive immediate alerts.</p>
+        </div>
+
+        <div class="request-card">
+          <!-- Step Progress Indicators -->
+          <div class="form-steps-nav">
+            <div class="step-indicator-item active">
+              <div class="step-circle">1</div>
+              <span class="step-lbl-text">Patient</span>
+            </div>
+            <div class="step-indicator-item">
+              <div class="step-circle">2</div>
+              <span class="step-lbl-text">Hospital</span>
+            </div>
+            <div class="step-indicator-item">
+              <div class="step-circle">3</div>
+              <span class="step-lbl-text">Contact</span>
+            </div>
+            <div class="step-indicator-item">
+              <div class="step-circle">4</div>
+              <span class="step-lbl-text">Verify</span>
+            </div>
+          </div>
+
+          <form id="bloodRequestForm" onsubmit="BloodLinkApp.handleRequestSubmit(event)">
+            <!-- Patient Name -->
+            <div class="form-group-wrap">
+              <label class="form-label" for="reqPatientName">Patient Display Name <span class="req-star">*</span></label>
+              <input type="text" class="form-text-input" id="reqPatientName" placeholder="e.g. Ramesh Chandra (or Patient Initials)" required>
+              <div class="form-hint">Privacy note: Only authorized medical staff will see complete records.</div>
+            </div>
+
+            <!-- Required Blood Group -->
+            <div class="form-group-wrap">
+              <label class="form-label">Required Blood Group <span class="req-star">*</span></label>
+              <div class="blood-radio-grid">
+                <div class="blood-radio-btn" data-bg="A+">A+</div>
+                <div class="blood-radio-btn" data-bg="A-">A-</div>
+                <div class="blood-radio-btn" data-bg="B+">B+</div>
+                <div class="blood-radio-btn" data-bg="B-">B-</div>
+                <div class="blood-radio-btn selected" data-bg="O-">O-</div>
+                <div class="blood-radio-btn" data-bg="O+">O+</div>
+                <div class="blood-radio-btn" data-bg="AB+">AB+</div>
+                <div class="blood-radio-btn" data-bg="AB-">AB-</div>
+              </div>
+            </div>
+
+            <!-- Units Needed & Urgency Row -->
+            <div class="form-group-wrap form-grid-units-urgency">
+              <div>
+                <label class="form-label" for="reqUnitsInput">Units Needed <span class="req-star">*</span></label>
+                <input type="number" class="form-text-input" id="reqUnitsInput" min="1" max="10" value="2" required>
+              </div>
+              <div>
+                <label class="form-label">Urgency Level <span class="req-star">*</span></label>
+                <div class="urgency-cards-row">
+                  <div class="urgency-card-btn selected critical" data-urgency="Critical">
+                    <span class="urgency-title-text" style="color:#EF4444;">Critical</span>
+                    <span class="urgency-time-text">&lt; 2 Hours</span>
+                  </div>
+                  <div class="urgency-card-btn urgent" data-urgency="Urgent">
+                    <span class="urgency-title-text" style="color:#F59E0B;">Urgent</span>
+                    <span class="urgency-time-text">&lt; 12 Hours</span>
+                  </div>
+                  <div class="urgency-card-btn standard" data-urgency="Standard">
+                    <span class="urgency-title-text" style="color:#10B981;">Standard</span>
+                    <span class="urgency-time-text">24 - 48 Hrs</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hospital & City -->
+            <div class="form-group-wrap form-grid-hospital-city">
+              <div>
+                <label class="form-label" for="reqHospitalName">Hospital Name & Campus <span class="req-star">*</span></label>
+                <input type="text" class="form-text-input" id="reqHospitalName" placeholder="e.g. Manipal Hospital, HAL Airport Rd" required>
+              </div>
+              <div>
+                <label class="form-label" for="reqCityInput">City <span class="req-star">*</span></label>
+                <input type="text" class="form-text-input" id="reqCityInput" value="Bengaluru" required>
+              </div>
+            </div>
+
+            <!-- Requester Contact Info -->
+            <div class="form-group-wrap form-grid-contact-duo">
+              <div>
+                <label class="form-label" for="reqContactName">Requester Name <span class="req-star">*</span></label>
+                <input type="text" class="form-text-input" id="reqContactName" placeholder="e.g. Dr. Verma / Attendant" required>
+              </div>
+              <div>
+                <label class="form-label" for="reqContactPhone">Contact Phone Number <span class="req-star">*</span></label>
+                <input type="tel" class="form-text-input" id="reqContactPhone" placeholder="+91 98XXX XXXXX" required>
+              </div>
+            </div>
+
+            <!-- Hospital Admission Slip Upload Simulator -->
+            <div class="form-group-wrap">
+              <label class="form-label">Hospital Requisition / Admission Slip (Verification Document)</label>
+              <div class="file-upload-dropzone" onclick="document.getElementById('hiddenDocInput').click()">
+                <input type="file" id="hiddenDocInput" style="display:none;" onchange="BloodLinkApp.showToast('Document attached: Admission_Card.pdf')">
+                <svg class="upload-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <div style="font-size:0.92rem; font-weight:700; color:var(--text-primary); margin-bottom:2px;">Tap to attach doctor requisition or ICU slip</div>
+                <div style="font-size:0.78rem; color:var(--text-muted);">PDF, JPG, PNG up to 10MB (Secured in private review queue)</div>
+              </div>
+            </div>
+
+            <!-- Additional Notes -->
+            <div class="form-group-wrap">
+              <label class="form-label" for="reqNotesInput">Additional Notes for Donors</label>
+              <textarea class="form-text-input" id="reqNotesInput" rows="2" placeholder="e.g. Patient is in 3rd Floor ICU. Transfusion coordinator on duty."></textarea>
+            </div>
+
+            <!-- Disclaimer Banner -->
+            <div style="background:rgba(217,4,41,0.08); border:1px solid rgba(217,4,41,0.3); border-radius:var(--radius-md); padding:14px; margin-bottom:20px; font-size:0.8rem; color:#FDA4AF; line-height:1.4;">
+              <strong>Emergency Notice:</strong> Submitting a request alerts voluntary donors in the Blood Link network. This does not replace an emergency hospital blood bank. In critical situations, immediately contact your hospital's emergency transfusion unit.
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-actions-row">
+              <button type="button" class="btn-secondary" onclick="BloodLinkApp.switchView('home')">Cancel</button>
+              <button type="submit" class="btn-primary" style="padding:14px 32px; font-size:1rem;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                Generate Emergency Requisition
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------------
+         VIEW 4: ALERTS & NOTIFICATIONS
+         ------------------------------------------------------------------------ -->
+    <section class="app-view" id="view-alerts">
+      <div class="alerts-container">
+        <div class="alerts-header-actions">
+          <div class="view-title-wrap" style="margin-bottom:0;">
+            <h2>Coordination Alerts</h2>
+            <p>Live status updates, donor responses, and critical alerts in your area.</p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn-ghost" onclick="BloodLinkApp.markAllAlertsRead()">Mark All Read</button>
+          </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="alerts-tabs-row">
+          <button class="alert-tab-btn active" onclick="BloodLinkApp.filterAlerts('all', this)">All Notifications</button>
+          <button class="alert-tab-btn" onclick="BloodLinkApp.filterAlerts('urgent', this)">Urgent Requests</button>
+          <button class="alert-tab-btn" onclick="BloodLinkApp.filterAlerts('match', this)">Donor Matches</button>
+          <button class="alert-tab-btn" onclick="BloodLinkApp.filterAlerts('update', this)">Updates</button>
+          <button class="alert-tab-btn" onclick="BloodLinkApp.filterAlerts('system', this)">System</button>
+        </div>
+
+        <!-- Alerts List -->
+        <div class="alerts-list" id="alertsListContainer">
+          <!-- Dynamically populated via app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------------
+         VIEW 5: PROFILE & SETTINGS
+         ------------------------------------------------------------------------ -->
+    <section class="app-view" id="view-profile">
+      <div class="profile-container">
+        <!-- Profile Hero Identity Card -->
+        <div class="profile-hero-card">
+          <div class="profile-identity-row">
+            <div class="profile-user-details">
+              <div class="profile-avatar-big" id="profileAvatarBig">R</div>
+              <div class="profile-names-wrap">
+                <h2 id="profileFullName">Rahul Sharma</h2>
+                <div class="profile-meta-pills">
+                  <div class="blood-badge blood-badge-sm" id="profileBloodBadge">O+</div>
+                  <span class="status-pill available">Verified Donor</span>
+                  <span style="font-size:0.8rem; color:var(--text-secondary);" id="profileCity">Indiranagar, Bengaluru</span>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+              <button class="btn-primary" style="padding:8px 14px; font-size:0.82rem;" onclick="BloodLinkApp.openAuthModal('login')">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                Log In / Register
+              </button>
+              <button class="btn-secondary" style="padding:8px 14px; font-size:0.82rem;" onclick="BloodLinkApp.openModal('modalAccountSwitcher')">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                Switch Role
+              </button>
+            </div>
+          </div>
+
+          <!-- Availability Control Switch -->
+          <div class="availability-control-panel">
+            <div class="avail-info">
+              <h4>Emergency Donor Availability Status</h4>
+              <p id="profileAvailStatusText">Ready to respond immediately to local emergency blood alerts.</p>
+            </div>
+            <label class="toggle-switch-label">
+              <input type="checkbox" class="toggle-checkbox" id="profileAvailToggle" checked>
+            </label>
+          </div>
+        </div>
+
+        <!-- Digital Holographic Volunteer Donor Pass -->
+        <div class="digital-donor-pass">
+          <div class="pass-header">
+            <div class="pass-brand">
+              <img src="assets/logo.png" class="brand-logo-img-pass" alt="Blood Link Logo">
+              <span>BLOOD LINK VOLUNTEER PASS</span>
+            </div>
+            <span style="font-size:0.75rem; color:#FDA4AF; letter-spacing:0.06em; font-weight:700;">OFFICIAL DIGITAL CREDENTIAL</span>
+          </div>
+
+          <div class="pass-body">
+            <div class="pass-stats-col">
+              <div class="pass-stat-item">
+                <div class="stat-num" id="passBloodGroup">O+</div>
+                <div class="stat-lbl">Blood Group</div>
+              </div>
+              <div class="pass-stat-item">
+                <div class="stat-num" id="passDonationsCount">3</div>
+                <div class="stat-lbl">Donations</div>
+              </div>
+              <div class="pass-stat-item">
+                <div class="stat-num" id="passLivesSaved">9</div>
+                <div class="stat-lbl">Est. Lives Saved</div>
+              </div>
+            </div>
+
+            <!-- QR Code Simulator for hospital check-in -->
+            <div class="pass-qr-simulator" title="Hospital Desk Check-In QR">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <rect x="2" y="2" width="8" height="8" rx="1"/>
+                <rect x="14" y="2" width="8" height="8" rx="1"/>
+                <rect x="2" y="14" width="8" height="8" rx="1"/>
+                <rect x="14" y="14" width="4" height="4"/>
+                <rect x="18" y="18" width="4" height="4"/>
+                <rect x="14" y="18" width="4" height="4" fill="none"/>
+              </svg>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; color:#FECDD3; border-top:1px solid rgba(255,255,255,0.1); padding-top:12px;">
+            <span>Donor ID: <strong id="passDonorId">BL-DN-8491</strong></span>
+            <span>Hospital Blood Bank Ready</span>
+          </div>
+        </div>
+
+        <!-- Profile Secondary Options Links Grid -->
+        <div class="profile-links-grid">
+          <!-- 0. Account Authentication & 4-Category Access -->
+          <div class="profile-link-card" onclick="BloodLinkApp.openAuthModal('login')">
+            <div class="profile-link-left">
+              <div class="profile-link-icon" style="color:var(--primary-red);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+              </div>
+              <h5>Account Login & Registration (4 Categories)</h5>
+            </div>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+
+          <!-- 1. Track Requests -->
+          <div class="profile-link-card" onclick="BloodLinkApp.switchView('tracker')">
+            <div class="profile-link-left">
+              <div class="profile-link-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+              <h5>Track Blood Requests</h5>
+            </div>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+
+          <!-- 2. Admin Coordination Portal -->
+          <div class="profile-link-card" onclick="BloodLinkApp.switchView('admin')">
+            <div class="profile-link-left">
+              <div class="profile-link-icon" style="color:#60A5FA;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+              </div>
+              <h5>Admin Coordination Portal</h5>
+            </div>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+
+          <!-- 3. AI FAQ Assistant -->
+          <div class="profile-link-card" onclick="BloodLinkApp.toggleChatDrawer(true)">
+            <div class="profile-link-left">
+              <div class="profile-link-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </div>
+              <h5>LinkBot AI FAQ Assistant</h5>
+            </div>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+
+          <!-- 4. About & Safety Standards -->
+          <div class="profile-link-card" onclick="BloodLinkApp.openModal('modalAboutHelp')">
+            <div class="profile-link-left">
+              <div class="profile-link-icon" style="color:#34D399;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              </div>
+              <h5>About, Privacy & Safety Center</h5>
+            </div>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+
+        <!-- Data Reset Button -->
+        <div style="text-align:center; margin-top:24px;">
+          <button class="btn-ghost" style="color:var(--text-danger);" onclick="BloodLinkStore.resetData(); BloodLinkApp.showToast('Demo data reset to factory defaults.'); setTimeout(()=>location.reload(), 800);">
+            Reset Demo Data to Defaults
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------------
+         SECONDARY VIEW: REQUEST STATUS TRACKER
+         ------------------------------------------------------------------------ -->
+    <section class="app-view" id="view-tracker">
+      <div class="tracker-modal-inner" style="margin:0 auto;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+          <div class="view-title-wrap" style="margin-bottom:0;">
+            <h2>Live Requisition Tracking</h2>
+            <p>End-to-end status visibility from hospital verification to donor check-in.</p>
+          </div>
+          <button class="btn-secondary" onclick="BloodLinkApp.switchView('home')">← Back to Dashboard</button>
+        </div>
+
+        <!-- Request Switcher -->
+        <div style="background:var(--bg-card); border:1px solid var(--navy-border); border-radius:var(--radius-lg); padding:16px; margin-bottom:20px;">
+          <label style="display:block; font-size:0.82rem; color:var(--text-secondary); margin-bottom:8px;">Select Requisition Reference to Inspect:</label>
+          <select class="form-text-input" id="trackerRequestSelect" onchange="BloodLinkApp.changeTrackedRequest(this.value)">
+            <!-- Populated via app.js -->
+          </select>
+        </div>
+
+        <!-- Request Card Header -->
+        <div class="tracker-status-bar">
+          <div style="display:flex; align-items:center; gap:16px;">
+            <div class="blood-badge" id="trackerBloodBadge">O-</div>
+            <div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <h3 id="trackerPatientName" style="color:var(--text-primary);">Deepak Verma</h3>
+                <span class="status-pill critical" id="trackerStatusPill">Matched</span>
+              </div>
+              <span style="font-size:0.82rem; color:var(--text-secondary);" id="trackerHospital">Manipal Hospital, Bengaluru</span>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">Reference ID</div>
+            <div style="font-size:1.1rem; font-weight:800; color:var(--primary-red);" id="trackerRefCode">BL-REQ-8492</div>
+          </div>
+        </div>
+
+        <!-- 6-Stage Timeline -->
+        <div class="card" style="margin-bottom:20px;">
+          <h4 style="font-size:1rem; color:var(--text-primary); margin-bottom:18px;">Coordination Progress Timeline</h4>
+          <div class="tracker-timeline" id="trackerTimelineNodes">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Interactive Reviewer Simulation Controls -->
+        <div class="simulation-box">
+          <h5>Demo Lifecycle Simulation Controls</h5>
+          <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:12px;">Reviewers can trigger state transitions to observe the 6-stage healthcare coordination workflow:</p>
+          <div class="simulation-actions">
+            <button class="btn-secondary" style="font-size:0.82rem; padding:6px 12px;" onclick="BloodLinkApp.simulateTrackerStage('Under Review')">1. Simulate Coordinator Review</button>
+            <button class="btn-secondary" style="font-size:0.82rem; padding:6px 12px;" onclick="BloodLinkApp.simulateTrackerStage('Matched')">2. Simulate Donor Match</button>
+            <button class="btn-secondary" style="font-size:0.82rem; padding:6px 12px;" onclick="BloodLinkApp.simulateTrackerStage('Accepted')">3. Simulate Donor Transit</button>
+            <button class="btn-primary" style="font-size:0.82rem; padding:6px 14px;" onclick="BloodLinkApp.simulateTrackerStage('Fulfilled')">4. Mark as Fulfilled</button>
+            <button class="btn-ghost" style="font-size:0.82rem; color:var(--text-danger);" onclick="BloodLinkApp.simulateTrackerStage('Cancelled')">Cancel Request</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------------
+         SECONDARY VIEW: ADMIN COORDINATION PORTAL
+         ------------------------------------------------------------------------ -->
+    <section class="app-view" id="view-admin">
+      <div class="admin-badge-banner">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span style="font-size:0.86rem; font-weight:700; color:#E0E7FF;">Hospital & Blood Bank Coordinator Console</span>
+        </div>
+        <button class="btn-ghost" style="color:#FFFFFF; font-size:0.8rem;" onclick="BloodLinkApp.switchView('home')">Exit Admin Mode ✕</button>
+      </div>
+
+      <div class="admin-stats-grid">
+        <div class="admin-stat-card">
+          <div class="stat-val" id="adminTotalReqs">4</div>
+          <div class="stat-lbl">Total Requisitions</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="stat-val" id="adminPendingReqs" style="color:#FBBF24;">1</div>
+          <div class="stat-lbl">Pending Review</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="stat-val" id="adminActiveDonors" style="color:#34D399;">9</div>
+          <div class="stat-lbl">Active Ready Donors</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="stat-val" id="adminFulfilledReqs" style="color:#60A5FA;">1</div>
+          <div class="stat-lbl">Transfusions Completed</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:24px;">
+        <h4 style="font-size:1.1rem; color:var(--text-primary); margin-bottom:16px;">Requisition Review & Verification Queue</h4>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Req ID</th>
+                <th>Patient</th>
+                <th>Group</th>
+                <th>Hospital</th>
+                <th>Urgency</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminRequestsTbody">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       MOBILE BOTTOM NAVIGATION (EXACTLY 5 ITEMS)
+       ========================================================================== -->
+  <nav class="mobile-bottom-bar" aria-label="Mobile Navigation">
+    <div class="bottom-bar-inner">
+      <button class="mobile-nav-btn active" data-view="home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Home</span>
+      </button>
+
+      <button class="mobile-nav-btn" data-view="donors">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>Donors</span>
+      </button>
+
+      <!-- Center Raised Request Button -->
+      <button class="mobile-nav-btn req-center-btn" data-view="request">
+        <div class="center-icon-glow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><line x1="12" y1="9" x2="12" y2="15"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+        </div>
+        <span>Request</span>
+      </button>
+
+      <button class="mobile-nav-btn" data-view="alerts">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span>Alerts</span>
+        <span class="mobile-badge" id="mobileAlertBadge">2</span>
+      </button>
+
+      <button class="mobile-nav-btn" data-view="profile">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Profile</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ==========================================================================
+       FLOATING AI ASSISTANT LAUNCHER & CHAT DRAWER
+       ========================================================================== -->
+  <button class="floating-assistant-btn" id="floatingAiBtn" title="Ask LinkBot AI">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="8" y1="10" x2="8.01" y2="10"/><line x1="12" y1="10" x2="12.01" y2="10"/><line x1="16" y1="10" x2="16.01" y2="10"/></svg>
+  </button>
+
+  <div class="chat-drawer" id="chatDrawer">
+    <div class="chat-header">
+      <div class="chat-header-info">
+        <div class="chat-bot-avatar">
+          <img src="assets/logo.png" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" alt="LinkBot Logo">
+        </div>
+        <div>
+          <h4 style="font-size:0.95rem; color:#FFFFFF;">LinkBot FAQ Assistant</h4>
+          <span style="font-size:0.72rem; color:#34D399;">● Online • Verified Medical Knowledge</span>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:4px;">
+        <button class="btn-ghost" style="padding:4px;" onclick="BloodLinkApp.clearChat()" title="Clear Chat">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+        <button class="btn-ghost" id="chatCloseBtn" style="padding:4px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Suggested Question Chips -->
+    <div class="suggested-chips-container">
+      <span class="suggested-chip" data-query="How do I request blood?">How to request blood?</span>
+      <span class="suggested-chip" data-query="Who can register as a donor?">Who can donate?</span>
+      <span class="suggested-chip" data-query="Which blood groups can donate to each other?">Blood compatibility</span>
+      <span class="suggested-chip" data-query="Is my personal phone number displayed publicly?">Privacy & numbers</span>
+    </div>
+
+    <!-- Messages Container -->
+    <div class="chat-messages-container" id="chatMessages">
+      <!-- Populated via app.js -->
+    </div>
+
+    <!-- Input Form -->
+    <div class="chat-input-area">
+      <input type="text" class="chat-input-field" id="chatInput" placeholder="Ask about blood coordination, safety...">
+      <button class="btn-primary" id="chatSendBtn" style="padding:8px 14px; border-radius:var(--radius-full);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODALS & DIALOGS
+       ========================================================================== -->
+
+  <!-- Modal: Request Success Confirmation -->
+  <div class="modal-overlay" id="modalRequestSuccess">
+    <div class="modal-content-card" style="text-align:center;">
+      <div style="width:64px; height:64px; border-radius:50%; background:rgba(16,185,129,0.15); color:var(--text-success); display:flex; align-items:center; justify-content:center; margin:0 auto 16px;">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h3 style="font-size:1.4rem; color:var(--text-primary); margin-bottom:6px;">Requisition Broadcast Active!</h3>
+      <p style="color:var(--text-secondary); font-size:0.9rem; margin-bottom:20px;">
+        Your emergency blood request has been assigned reference code:
+      </p>
+
+      <div style="background:var(--bg-card); border:1.5px dashed var(--primary-red); border-radius:var(--radius-lg); padding:16px; margin-bottom:24px;">
+        <span style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase;">Tracking Reference</span>
+        <div style="font-size:1.6rem; font-weight:800; color:var(--primary-red);" id="successReqRefId">BL-REQ-8492</div>
+        <div style="font-size:0.85rem; color:var(--text-secondary); margin-top:4px;">
+          Blood Group: <strong id="successReqBloodGroup" style="color:#FFF;">O-</strong> • <span id="successReqHospital">Manipal Hospital</span>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <button class="btn-primary" onclick="BloodLinkApp.closeModal('modalRequestSuccess'); BloodLinkApp.switchView('tracker');">
+          Track Live Progress Now
+        </button>
+        <button class="btn-secondary" onclick="BloodLinkApp.closeModal('modalRequestSuccess'); BloodLinkApp.switchView('home');">
+          Return to Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Contact Donor with Privacy Safeguards -->
+  <div class="modal-overlay" id="modalContactDonor">
+    <div class="modal-content-card">
+      <button class="modal-close-btn" onclick="BloodLinkApp.closeModal('modalContactDonor')">✕</button>
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+        <div class="blood-badge" id="contactDonorBlood">O+</div>
+        <div>
+          <h3 style="font-size:1.2rem; color:var(--text-primary);" id="contactDonorName">Vikram R.</h3>
+          <span style="font-size:0.82rem; color:var(--text-secondary);" id="contactDonorArea">Indiranagar, Bengaluru</span>
+        </div>
+      </div>
+
+      <div style="background:rgba(37,99,235,0.08); border:1px solid rgba(37,99,235,0.3); border-radius:var(--radius-md); padding:14px; margin-bottom:20px;">
+        <h5 style="color:#60A5FA; font-size:0.85rem; margin-bottom:4px;">Privacy Protected Coordination</h5>
+        <p style="color:var(--text-secondary); font-size:0.8rem;">To prevent spam and protect donor safety, personal phone numbers remain masked. This sends an urgent in-app alert with patient hospital details directly to the donor's app.</p>
+      </div>
+
+      <div class="form-group-wrap">
+        <label class="form-label">Attach Existing Request (Optional)</label>
+        <select class="form-text-input">
+          <option>BL-REQ-8492 (Deepak Verma - Manipal Hospital)</option>
+          <option>BL-REQ-7104 (Aarav Pillai - St. John's)</option>
+        </select>
+      </div>
+
+      <div class="form-group-wrap">
+        <label class="form-label">Urgent Coordination Message</label>
+        <textarea class="form-text-input" rows="2" placeholder="e.g. Urgent need for tomorrow morning scheduled bypass procedure."></textarea>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:20px;">
+        <button class="btn-secondary" onclick="BloodLinkApp.closeModal('modalContactDonor')">Cancel</button>
+        <button class="btn-primary" onclick="BloodLinkApp.submitContactDonor()">Dispatch Notification</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Volunteer Donation Response -->
+  <div class="modal-overlay" id="modalRespondRequest">
+    <div class="modal-content-card">
+      <button class="modal-close-btn" onclick="BloodLinkApp.closeModal('modalRespondRequest')">✕</button>
+      <h3 style="font-size:1.25rem; color:var(--text-primary); margin-bottom:6px;" id="respondReqTitle">Confirm Donation Response</h3>
+      <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:18px;" id="respondReqDetails">O- • Manipal Hospital, Bengaluru</p>
+
+      <div style="background:var(--bg-card); border:1px solid var(--navy-border); border-radius:var(--radius-md); padding:14px; margin-bottom:18px;">
+        <h5 style="color:var(--text-primary); font-size:0.88rem; margin-bottom:6px;">Volunteer Donor Checklist:</h5>
+        <ul style="font-size:0.8rem; color:var(--text-secondary); padding-left:18px; line-height:1.6;">
+          <li>I am in good health with no fever or active infections.</li>
+          <li>I have not donated blood in the last 90 days.</li>
+          <li>I can transit to the hospital blood center within the required window.</li>
+        </ul>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:12px;">
+        <button class="btn-secondary" onclick="BloodLinkApp.closeModal('modalRespondRequest')">Cancel</button>
+        <button class="btn-primary" onclick="BloodLinkApp.confirmDonationResponse()">I Confirm — I Will Donate</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Become a Donor Registration -->
+  <div class="modal-overlay" id="modalBecomeDonor">
+    <div class="modal-content-card">
+      <button class="modal-close-btn" onclick="BloodLinkApp.closeModal('modalBecomeDonor')">✕</button>
+      <h3 style="font-size:1.3rem; color:var(--text-primary); margin-bottom:4px;">Register as Volunteer Donor</h3>
+      <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:20px;">Join our emergency hero registry. Receive notifications only when matching lives are in critical need.</p>
+
+      <form onsubmit="event.preventDefault(); BloodLinkApp.closeModal('modalBecomeDonor'); BloodLinkApp.showToast('Congratulations! You are registered as an Emergency Volunteer Donor.');">
+        <div class="form-group-wrap">
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-text-input" value="Rahul Sharma" required>
+        </div>
+
+        <div class="form-group-wrap form-grid-contact-duo">
+          <div>
+            <label class="form-label">Blood Group</label>
+            <select class="form-text-input">
+              <option>O+</option>
+              <option>O-</option>
+              <option>A+</option>
+              <option>A-</option>
+              <option>B+</option>
+              <option>B-</option>
+              <option>AB+</option>
+              <option>AB-</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">City & Area</label>
+            <input type="text" class="form-text-input" value="Bengaluru, Indiranagar" required>
+          </div>
+        </div>
+
+        <div class="form-group-wrap">
+          <label class="toggle-switch-label" style="margin-top:10px;">
+            <input type="checkbox" class="toggle-checkbox" checked>
+            <span>I agree to receive urgent matching notifications within my city.</span>
+          </label>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:24px;">
+          <button type="button" class="btn-secondary" onclick="BloodLinkApp.closeModal('modalBecomeDonor')">Cancel</button>
+          <button type="submit" class="btn-primary">Generate Volunteer Pass</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: About, Privacy & Safety Center -->
+  <div class="modal-overlay" id="modalAboutHelp">
+    <div class="modal-content-card" style="max-width:680px;">
+      <button class="modal-close-btn" onclick="BloodLinkApp.closeModal('modalAboutHelp')">✕</button>
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+        <div class="brand-logo-wrap" style="width:36px; height:36px;">
+          <img src="assets/logo.png" class="brand-logo-img" alt="Blood Link Logo">
+        </div>
+        <h3 style="font-size:1.3rem; color:var(--text-primary);">About BLOOD LINK</h3>
+      </div>
+
+      <p style="font-size:0.88rem; color:var(--text-secondary); line-height:1.5; margin-bottom:16px;">
+        <strong>BLOOD LINK</strong> is a technology-enabled voluntary coordination platform connecting willing blood donors, families in emergency need, and verified healthcare facilities.
+      </p>
+
+      <div style="background:var(--bg-card); border:1px solid var(--navy-border); border-radius:var(--radius-md); padding:16px; margin-bottom:18px;">
+        <h4 style="font-size:0.95rem; color:#FFFFFF; margin-bottom:8px;">Core Safety & Legal Principles:</h4>
+        <ul style="font-size:0.82rem; color:var(--text-secondary); line-height:1.6; padding-left:18px;">
+          <li><strong>Non-Commercial:</strong> Blood donation is strictly voluntary and altruistic. Commercial trade or monetization of blood products is illegal and prohibited.</li>
+          <li><strong>Clinical Integrity:</strong> Blood Link facilitates digital contact. Blood cross-matching, infectious disease screening, and all clinical procedures happen exclusively at certified hospital blood centers.</li>
+          <li><strong>Privacy Protection:</strong> Phone numbers are never exposed to public crawlers or unverified third parties.</li>
+        </ul>
+      </div>
+
+      <!-- Working Feedback/Support Form -->
+      <h4 style="font-size:0.95rem; color:var(--text-primary); margin-bottom:8px;">Contact Support & Feedback</h4>
+      <form onsubmit="event.preventDefault(); BloodLinkApp.closeModal('modalAboutHelp'); BloodLinkApp.showToast('Thank you! Your feedback has been forwarded to the coordination team.');">
+        <textarea class="form-text-input" rows="2" placeholder="Send a question, bug report, or healthcare partnership inquiry..." required></textarea>
+        <div style="display:flex; justify-content:flex-end; margin-top:10px;">
+          <button type="submit" class="btn-primary" style="padding:8px 18px; font-size:0.84rem;">Submit Message</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Authentication (Login, Registration, 4 Categories & OTP) -->
+  <div class="modal-overlay" id="modalAuth">
+    <div class="modal-content-card" style="max-width: 540px;">
+      <button class="modal-close-btn" onclick="BloodLinkApp.closeModal('modalAuth')">✕</button>
+
+      <!-- Modal Brand & Title -->
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+        <div class="brand-logo-wrap" style="width:36px; height:36px;">
+          <img src="assets/logo.png" class="brand-logo-img" alt="Blood Link Logo">
+        </div>
+        <div>
+          <h3 style="font-size:1.25rem; color:var(--text-primary);" id="authModalTitle">Blood Link Access Portal</h3>
+          <p style="font-size:0.78rem; color:var(--text-secondary);" id="authModalSubtitle">Secure healthcare coordination for Donors, Patients, Hospitals & Blood Banks</p>
+        </div>
+      </div>
+
+      <!-- Segmented Nav: Log In vs Register -->
+      <div class="auth-tabs-nav">
+        <div class="auth-tab-btn active" id="authTabLoginBtn" onclick="BloodLinkApp.switchAuthTab('login')">Log In</div>
+        <div class="auth-tab-btn" id="authTabRegisterBtn" onclick="BloodLinkApp.switchAuthTab('register')">Create Account</div>
+      </div>
+
+      <!-- 4 Categories Selector -->
+      <div class="auth-categories-selector">
+        <span class="auth-categories-label" id="authCatLabel">Select Category:</span>
+        <div class="auth-categories-grid">
+          <div class="auth-category-pill selected" data-cat="donor" onclick="BloodLinkApp.selectAuthCategory('donor')">
+            <svg class="auth-cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><line x1="12" y1="9" x2="12" y2="15"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+            <span class="auth-cat-name">Donor</span>
+          </div>
+
+          <div class="auth-category-pill" data-cat="patient" onclick="BloodLinkApp.selectAuthCategory('patient')">
+            <svg class="auth-cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="auth-cat-name">Patient</span>
+          </div>
+
+          <div class="auth-category-pill" data-cat="hospital" onclick="BloodLinkApp.selectAuthCategory('hospital')">
+            <svg class="auth-cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16M9 9h6M9 13h6M12 9v8"/></svg>
+            <span class="auth-cat-name">Hospital</span>
+          </div>
+
+          <div class="auth-category-pill" data-cat="bloodbank" onclick="BloodLinkApp.selectAuthCategory('bloodbank')">
+            <svg class="auth-cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+            <span class="auth-cat-name">Blood Bank</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW A: REGISTRATION FORM -->
+      <div id="authRegisterSection" style="display:none;">
+        <form id="authRegisterForm" onsubmit="BloodLinkApp.handleRegistrationSubmit(event)">
+          <!-- Name / Facility Name -->
+          <div class="form-group-wrap">
+            <label class="form-label" id="regNameLabel">Full Name <span class="req-star">*</span></label>
+            <input type="text" class="form-text-input" id="regNameInput" placeholder="e.g. Rahul Sharma" required>
+          </div>
+
+          <!-- Contact Person (For Hospital & Blood Bank) -->
+          <div class="form-group-wrap" id="regContactPersonGroup" style="display:none;">
+            <label class="form-label">Authorized Contact Person / Coordinator <span class="req-star">*</span></label>
+            <input type="text" class="form-text-input" id="regContactPersonInput" placeholder="e.g. Dr. Anita Roy (Medical Superintendent)">
+          </div>
+
+          <!-- Mobile & Email in 2 columns -->
+          <div class="form-group-wrap form-grid-contact-duo">
+            <div>
+              <label class="form-label">Mobile Number <span class="req-star">*</span></label>
+              <input type="tel" class="form-text-input" id="regPhoneInput" placeholder="10-digit mobile number" maxlength="10" required>
+            </div>
+            <div>
+              <label class="form-label">Email Address <span class="req-star">*</span></label>
+              <input type="email" class="form-text-input" id="regEmailInput" placeholder="name@domain.com" required>
+            </div>
+          </div>
+
+          <!-- Address / Location -->
+          <div class="form-group-wrap">
+            <label class="form-label" id="regAddressLabel">Residential Address / City & Area <span class="req-star">*</span></label>
+            <input type="text" class="form-text-input" id="regAddressInput" placeholder="e.g. 14th Main, Indiranagar, Bengaluru" required>
+          </div>
+
+          <!-- Category Specific: Blood Group (For Donor/Patient) -->
+          <div class="form-group-wrap" id="regBloodGroupGroup">
+            <label class="form-label" id="regBloodGroupLabel">Blood Group <span class="req-star">*</span></label>
+            <select class="form-text-input" id="regBloodGroupSelect">
+              <option value="O-">O- (Universal Donor)</option>
+              <option value="O+">O+</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+ (Universal Recipient)</option>
+              <option value="AB-">AB-</option>
+            </select>
+          </div>
+
+          <!-- Facility License ID (For Hospital/Blood Bank) -->
+          <div class="form-group-wrap" id="regLicenseGroup" style="display:none;">
+            <label class="form-label" id="regLicenseLabel">Accreditation / Facility License ID <span class="req-star">*</span></label>
+            <input type="text" class="form-text-input" id="regLicenseInput" placeholder="e.g. KA-MED-HOSP-4921 / FDA-BB-KA-2026">
+          </div>
+
+          <!-- Password with toggle -->
+          <div class="form-group-wrap">
+            <label class="form-label">Password <span class="req-star">*</span></label>
+            <div class="password-input-wrap">
+              <input type="password" class="form-text-input" id="regPasswordInput" placeholder="Minimum 6 characters" minlength="6" required>
+              <span class="password-toggle-btn" onclick="BloodLinkApp.togglePasswordVisibility('regPasswordInput', this)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </span>
+            </div>
+          </div>
+
+          <!-- Terms Consent -->
+          <div class="form-group-wrap">
+            <label class="toggle-switch-label" style="font-size:0.78rem; line-height:1.4;">
+              <input type="checkbox" class="toggle-checkbox" checked required>
+              <span>I consent to Blood Link emergency coordination verification and terms of privacy.</span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn-primary" style="width:100%; margin-top:8px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Send OTP & Proceed to Verify
+          </button>
+        </form>
+      </div>
+
+      <!-- VIEW B: OTP VERIFICATION STEP -->
+      <div id="authOtpSection" style="display:none;">
+        <button class="btn-ghost" style="margin-bottom:12px; padding:0; font-size:0.8rem;" onclick="BloodLinkApp.backToRegisterFields()">
+          ← Edit Registration Details
+        </button>
+
+        <!-- Simulated SMS Notification Box -->
+        <div class="sms-simulation-box">
+          <div class="sms-icon-bubble">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="sms-text-content">
+            <div class="sms-sender-title">💬 SMS Verification Simulation</div>
+            <div class="sms-body-code">
+              Your Blood Link verification code is: <strong id="simulatedOtpDisplay">4829</strong>
+              <div style="font-size:0.72rem; color:#93C5FD; margin-top:2px;">(Simulated OTP for demo testing. Auto-filled below.)</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center;">
+          <h4 style="font-size:1.15rem; color:var(--text-primary); margin-bottom:4px;">Enter Mobile Verification Code</h4>
+          <p style="font-size:0.82rem; color:var(--text-secondary);">
+            Enter the 4-digit OTP sent to <strong id="otpTargetPhone" style="color:#FFF;">+91 98765 43210</strong>
+          </p>
+
+          <!-- 4-Digit Inputs -->
+          <div class="otp-inputs-grid">
+            <input type="text" class="otp-digit-box" id="otpD1" maxlength="1" pattern="[0-9]" inputmode="numeric">
+            <input type="text" class="otp-digit-box" id="otpD2" maxlength="1" pattern="[0-9]" inputmode="numeric">
+            <input type="text" class="otp-digit-box" id="otpD3" maxlength="1" pattern="[0-9]" inputmode="numeric">
+            <input type="text" class="otp-digit-box" id="otpD4" maxlength="1" pattern="[0-9]" inputmode="numeric">
+          </div>
+
+          <div class="otp-timer-text">
+            <span>Did not receive code?</span>
+            <span class="otp-resend-link" id="otpResendBtn" onclick="BloodLinkApp.resendOtp()">Resend OTP</span>
+            <span id="otpTimerSpan" style="color:var(--text-muted); margin-left:4px;">(0:30)</span>
+          </div>
+
+          <button type="button" class="btn-primary" style="width:100%;" onclick="BloodLinkApp.verifyOtpAndRegister()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Verify OTP & Complete Registration
+          </button>
+        </div>
+      </div>
+
+      <!-- VIEW C: LOGIN FORM -->
+      <div id="authLoginSection">
+        <form id="authLoginForm" onsubmit="BloodLinkApp.handleLoginSubmit(event)">
+          <!-- Identifier Input -->
+          <div class="form-group-wrap">
+            <label class="form-label">Registered Mobile Number or Email <span class="req-star">*</span></label>
+            <input type="text" class="form-text-input" id="loginIdentifierInput" placeholder="e.g. 9888812345 or sarah.j@example.com" required>
+          </div>
+
+          <!-- Password Input -->
+          <div class="form-group-wrap">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <label class="form-label" style="margin-bottom:0;">Password <span class="req-star">*</span></label>
+              <a href="#" style="font-size:0.75rem; color:var(--accent-rose);" onclick="event.preventDefault(); BloodLinkApp.handleForgotPassword();">Forgot Password?</a>
+            </div>
+            <div class="password-input-wrap">
+              <input type="password" class="form-text-input" id="loginPasswordInput" placeholder="Enter your password" required>
+              <span class="password-toggle-btn" onclick="BloodLinkApp.togglePasswordVisibility('loginPasswordInput', this)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary" style="width:100%; margin-top:8px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            Sign In to Blood Link
+          </button>
+        </form>
+
+        <!-- Quick One-Click Demo Logins for All 4 Categories -->
+        <div class="demo-logins-box">
+          <div class="demo-logins-header">Instant Demo Access by Category</div>
+          <div class="demo-logins-grid">
+            <div class="demo-login-chip" onclick="BloodLinkApp.quickDemoLogin('donor')">
+              <span class="blood-badge blood-badge-sm" style="min-width:26px; height:26px; font-size:0.75rem;">O-</span>
+              <div>
+                <strong style="display:block; color:#FFF; font-size:0.75rem;">Sarah J.</strong>
+                <span style="font-size:0.65rem; color:#FDA4AF;">Donor</span>
+              </div>
+            </div>
+
+            <div class="demo-login-chip" onclick="BloodLinkApp.quickDemoLogin('patient')">
+              <span class="blood-badge blood-badge-sm" style="min-width:26px; height:26px; font-size:0.75rem;">A+</span>
+              <div>
+                <strong style="display:block; color:#FFF; font-size:0.75rem;">Arjun P.</strong>
+                <span style="font-size:0.65rem; color:#FCD34D;">Patient</span>
+              </div>
+            </div>
+
+            <div class="demo-login-chip" onclick="BloodLinkApp.quickDemoLogin('hospital')">
+              <div style="width:26px; height:26px; border-radius:4px; background:rgba(59,130,246,0.2); display:flex; align-items:center; justify-content:center; color:#60A5FA; flex-shrink:0;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16M9 9h6M9 13h6M12 9v8"/></svg>
+              </div>
+              <div>
+                <strong style="display:block; color:#FFF; font-size:0.75rem;">St. John's</strong>
+                <span style="font-size:0.65rem; color:#93C5FD;">Hospital</span>
+              </div>
+            </div>
+
+            <div class="demo-login-chip" onclick="BloodLinkApp.quickDemoLogin('bloodbank')">
+              <div style="width:26px; height:26px; border-radius:4px; background:rgba(16,185,129,0.2); display:flex; align-items:center; justify-content:center; color:#34D399; flex-shrink:0;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+              </div>
+              <div>
+                <strong style="display:block; color:#FFF; font-size:0.75rem;">Red Cross</strong>
+                <span style="font-size:0.65rem; color:#6EE7B7;">Blood Bank</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center; margin-top:16px;">
+          <span style="font-size:0.8rem; color:var(--text-secondary);">Don't have an account yet?</span>
+          <a href="#" style="font-size:0.8rem; color:var(--accent-rose); font-weight:700; margin-left:4px;" onclick="event.preventDefault(); BloodLinkApp.switchAuthTab('register');">Register Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Demo Account / Role Switcher -->
+  <div class="modal-overlay" id="modalAccountSwitcher">
+    <div class="modal-content-card">
+      <button class="modal-close-btn" onclick="BloodLinkApp.closeModal('modalAccountSwitcher')">✕</button>
+      <h3 style="font-size:1.25rem; color:var(--text-primary); margin-bottom:6px;">Instant Demo Account Switcher</h3>
+      <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:20px;">
+        Switch personas to test Blood Link from different healthcare perspectives:
+      </p>
+
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <!-- Option 1: Rahul -->
+        <div class="card card-clickable" onclick="BloodLinkApp.switchDemoAccount('rahul')">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <h4 style="color:#FFFFFF; font-size:0.98rem;">Rahul Sharma (Default User)</h4>
+              <p style="color:var(--text-secondary); font-size:0.8rem;">O+ Registered Active Volunteer Donor • Bengaluru</p>
+            </div>
+            <span class="blood-badge blood-badge-sm">O+</span>
+          </div>
+        </div>
+
+        <!-- Option 2: Sarah -->
+        <div class="card card-clickable" onclick="BloodLinkApp.switchDemoAccount('sarah')">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <h4 style="color:#FFFFFF; font-size:0.98rem;">Sarah Jenkins (Universal Lifesaver)</h4>
+              <p style="color:var(--text-secondary); font-size:0.8rem;">O- Universal Donor • 14 Lifetime Donations</p>
+            </div>
+            <span class="blood-badge blood-badge-sm">O-</span>
+          </div>
+        </div>
+
+        <!-- Option 3: Arjun -->
+        <div class="card card-clickable" onclick="BloodLinkApp.switchDemoAccount('arjun')">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <h4 style="color:#FFFFFF; font-size:0.98rem;">Arjun Pillai (Family Requester)</h4>
+              <p style="color:var(--text-secondary); font-size:0.8rem;">Father coordinating pediatric dengue platelets (A+)</p>
+            </div>
+            <span class="blood-badge blood-badge-sm">A+</span>
+          </div>
+        </div>
+
+        <!-- Option 4: Dr. Mehta -->
+        <div class="card card-clickable" onclick="BloodLinkApp.switchDemoAccount('admin')">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <h4 style="color:#60A5FA; font-size:0.98rem;">Dr. A. Mehta (Hospital Coordinator)</h4>
+              <p style="color:var(--text-secondary); font-size:0.8rem;">St. John's Hospital Blood Bank Desk Admin</p>
+            </div>
+            <span class="status-pill critical" style="background:rgba(25,25,25,0.9); color:#FFFFFF; border-color:#3A3A3A;">Hospital</span>
+          </div>
+        </div>
+
+        <!-- Option 5: Dr. Sunita Rao (Blood Bank Director) -->
+        <div class="card card-clickable" onclick="BloodLinkApp.switchDemoAccount('bloodbank')">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <h4 style="color:#34D399; font-size:0.98rem;">Dr. Sunita Rao (Blood Bank Director)</h4>
+              <p style="color:var(--text-secondary); font-size:0.8rem;">Red Cross Central Blood Bank & Component Center</p>
+            </div>
+            <span class="status-pill available" style="background:#064E3B; color:#A7F3D0; border-color:#059669;">Blood Bank</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Logic Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- Blood Link inline filter shortcut for matrix cards -->
+  <script>
+    BloodLinkApp.filterDonorsByGroup = function(group) {
+      BloodLinkApp.switchView('donors');
+      BloodLinkApp.activeDonorBloodFilter = group;
+      document.querySelectorAll('.blood-chips-row .blood-chip-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.bg === group);
+      });
+      BloodLinkApp.renderDonors();
+    };
+
+    BloodLinkApp.setUrgency = function(urgency) {
+      BloodLinkApp.selectedUrgency = urgency;
+      document.querySelectorAll('.urgency-card-btn').forEach(btn => {
+        btn.classList.toggle('selected', btn.dataset.urgency === urgency);
+      });
+    };
+  </script>
+</body>
+</html>
